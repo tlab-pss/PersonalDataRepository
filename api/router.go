@@ -10,5 +10,11 @@ func Router(e *gin.Engine, d *gorm.DB) {
 	ds := controllers.NewRegistry(d)
 	api := e.Group("/api")
 
-	api.GET("/basic", ds.GetBasics)
+	// basic
+	api.GET("/basics", ds.GetBasic)
+	api.POST("/basics", ds.CreateBasic)
+
+	// location
+	api.GET("/locations", ds.GetLocation)
+	api.POST("/locations", ds.CreateLocation)
 }
