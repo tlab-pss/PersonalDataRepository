@@ -16,15 +16,15 @@ func NewDataStore(d *gorm.DB) *datastore {
 func (d *datastore) Get() (*Basic, error) {
 	var ba []Basic
 
-	if err := d.db.Find(&ba).Error; err != nil {
+	if err := d.db.Order("created_at desc").First(&ba).Error; err != nil {
 		return nil, err
 	}
 
 	if len(ba) == 0 {
-		return nil, errors.New("There is not basic info")
+		return nil, errors.New("there is not basic info")
 	}
 
-	return &ba[len(ba)-1], nil
+	return &ba[0], nil
 }
 
 func (d *datastore) Store(basic *Basic) (*Basic, error) {
