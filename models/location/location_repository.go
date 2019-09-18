@@ -16,12 +16,12 @@ func NewDataStore(d *gorm.DB) *datastore {
 func (d *datastore) GetLatest() (*Location, error) {
 	var la []Location
 
-	if err := d.db.Find(&la).Error; err != nil {
+	if err := d.db.Order("created_at desc").Limit(1).Find(&la).Error; err != nil {
 		return nil, err
 	}
 
 	if len(la) == 0 {
-		return nil, errors.New("There is not location info")
+		return nil, errors.New("there is not location info")
 	}
 
 	return &la[len(la)-1], nil

@@ -16,7 +16,7 @@ func NewDataStore(d *gorm.DB) *datastore {
 func (d *datastore) Get() (*Basic, error) {
 	var ba []Basic
 
-	if err := d.db.Order("created_at desc").First(&ba).Error; err != nil {
+	if err := d.db.Order("created_at desc").Limit(1).First(&ba).Error; err != nil {
 		return nil, err
 	}
 
