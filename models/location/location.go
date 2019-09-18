@@ -1,10 +1,10 @@
-package model
+package location
 
 import "time"
 
 type Location struct {
-	ID string
-	Latitude string
+	ID        string
+	Latitude  string
 	Longitude string
 	CreatedAt time.Time
 }
