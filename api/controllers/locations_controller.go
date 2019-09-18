@@ -3,29 +3,31 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
+	"github.com/yuuis/PersonalDataRepository/api/utilities"
 	"github.com/yuuis/PersonalDataRepository/models"
 	"github.com/yuuis/PersonalDataRepository/models/location"
-	"net/http"
 	"time"
 )
 
 func (r *Registry) GetLocation(c *gin.Context) {
+	ctx := utilities.AddGinContext(c.Request.Context(), c)
 	ds := location.NewDataStore(r.db)
 	l, err := ds.GetLatest()
 
 	if err != nil {
-		presenters.ViewInternalServerError(c, err)
+		presenters.ViewInternalServerError(ctx, err)
 	}
 
-	presenters.JSON(c, http.StatusOK, l)
+	presenters.LocationView(ctx, *l)
 }
 
 func (r *Registry) CreateLocation(c *gin.Context) {
+	ctx := utilities.AddGinContext(c.Request.Context(), c)
 	ds := location.NewDataStore(r.db)
 
 	var ipt inputLocation
 	if err := c.BindJSON(&ipt); err != nil {
-		presenters.ViewBadRequest(c, err)
+		presenters.ViewBadRequest(ctx, err)
 	}
 
 	l, err := ds.Store(&location.Location{
@@ -36,10 +38,10 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 	})
 
 	if err != nil {
-		presenters.ViewInternalServerError(c, err)
+		presenters.ViewInternalServerError(ctx, err)
 	}
 
-	presenters.JSON(c, http.StatusOK, l)
+	presenters.LocationView(ctx, *l)
 }
 
 type inputLocation struct {
