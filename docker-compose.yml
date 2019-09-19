@@ -1,18 +1,5 @@
 version: '3'
 services:
-  app:
-    build: .
-    environment:
-      MYSQL_DATABASE: pss
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_HOST: mysql
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
-    links:
-      - mysql
-    tty: true
   mysql:
     image: mysql:8.0
     restart: unless-stopped
@@ -35,3 +22,16 @@ services:
     volumes:
       - ./db:/data/db/mongo_data
       - ./configdb:/data/configdb
+  app:
+    build: .
+    environment:
+      MYSQL_DATABASE: pss
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_HOST: mysql
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    tty: true
