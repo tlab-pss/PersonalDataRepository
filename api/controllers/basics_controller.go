@@ -36,10 +36,6 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
-	if err := basic.ValidateMail(ipt.Mail); err != nil {
-		presenters.ViewBadRequest(ctx, err)
-	}
-
 	if err := basic.ValidateGender(ipt.Gender); err != nil {
 		presenters.ViewBadRequest(ctx, err)
 	}
@@ -56,8 +52,6 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 		Birthday:  tb,
 		Gender:    ipt.Gender,
 		Mail:      ipt.Mail,
-		Weight:    ipt.Weight,
-		Height:    ipt.Height,
 		CreatedAt: time.Now(),
 	})
 
@@ -73,6 +67,4 @@ type inputBasic struct {
 	Birthday string  `json:"birthday"`
 	Gender   int     `json:"gender"`
 	Mail     string  `json:"mail"`
-	Weight   float64 `json:"weight"`
-	Height   float64 `json:"height"`
 }
