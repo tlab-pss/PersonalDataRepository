@@ -31,10 +31,11 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 	}
 
 	l, err := ds.Store(&location.Location{
-		ID:        models.GenerateUUID(),
-		Latitude:  ipt.Latitude,
-		Longitude: ipt.Longitude,
-		CreatedAt: time.Now(),
+		ID:             models.GenerateUUID(),
+		Latitude:       ipt.Latitude,
+		Longitude:      ipt.Longitude,
+		Transportation: ipt.Transportation,
+		CreatedAt:      time.Now(),
 	})
 
 	if err != nil {
@@ -45,6 +46,7 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 }
 
 type inputLocation struct {
-	Latitude  string `json:"latitude"`
-	Longitude string `json:"longitude"`
+	Latitude       string `json:"latitude"`
+	Longitude      string `json:"longitude"`
+	Transportation string `json:transportation`
 }
