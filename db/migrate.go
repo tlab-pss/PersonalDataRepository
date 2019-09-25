@@ -4,7 +4,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/yuuis/PersonalDataRepository/models/basic"
+	"github.com/yuuis/PersonalDataRepository/models/health"
 	"github.com/yuuis/PersonalDataRepository/models/location"
+	"github.com/yuuis/PersonalDataRepository/models/registration_information"
 	"log"
 	"os"
 )
@@ -21,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	mysql.CreateTable(&basic.Basic{}, &location.Location{})
+	mysql.CreateTable(&basic.Basic{}, &location.Location{}, &health.Health{}, &registration_information.RegistrationInformation{})
 
 	// mongo
 	// TODO: mongoのmigration
