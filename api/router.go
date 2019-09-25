@@ -17,4 +17,12 @@ func Router(e *gin.Engine, d *gorm.DB) {
 	// location
 	api.GET("/locations", ds.GetLocation)
 	api.POST("/locations", ds.CreateLocation)
+
+  // health
+	api.GET("/healths", ds.GetHealth)
+	api.POST("/healths", ds.CreateHealth)
+
+  // registration information
+	api.GET("/registration-informations", ds.GetRegistrationInformation)
+	api.POST("/registration-informations", ds.CreateRegistrationInformation)
 }
