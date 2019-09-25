@@ -21,7 +21,7 @@ func (d *datastore) GetLatest() (*Health, error) {
 	}
 
 	if len(he) == 0 {
-		return nil, errors.New("there is not location info")
+		return nil, errors.New("there is not health info")
 	}
 
 	return &he[len(he)-1], nil

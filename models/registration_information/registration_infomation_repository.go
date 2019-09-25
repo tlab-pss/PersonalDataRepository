@@ -21,7 +21,7 @@ func (d *datastore) Get() (*RegistrationInformation, error) {
 	}
 
 	if len(ri) == 0 {
-		return nil, errors.New("there is not location info")
+		return nil, errors.New("there is not registration info")
 	}
 
 	return &ri[len(ri)-1], nil
