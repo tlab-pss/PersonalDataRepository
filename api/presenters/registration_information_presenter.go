@@ -3,11 +3,11 @@ package presenters
 import (
 	"context"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
-	"github.com/yuuis/PersonalDataRepository/models/registration_information"
+	"github.com/yuuis/PersonalDataRepository/models/registered_information"
 	"net/http"
 )
 
-func RegistrationInformationView(ctx context.Context, ri registration_information.RegistrationInformation) {
+func RegisteredInformationView(ctx context.Context, ri registered_information.RegisteredInformation) {
 	defer utilities.DeleteGinContext(ctx)
 	c := utilities.GetGinContext(ctx)
 	JSON(c, http.StatusOK, ri)

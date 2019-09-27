@@ -5,36 +5,36 @@ import (
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
 	"github.com/yuuis/PersonalDataRepository/models"
-	"github.com/yuuis/PersonalDataRepository/models/registration_information"
+	"github.com/yuuis/PersonalDataRepository/models/registered_information"
 	"time"
 )
 
-func (r *Registry) GetRegistrationInformation(c *gin.Context) {
+func (r *Registry) GetRegisteredInformation(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
-	ds := registration_information.NewDataStore(r.db)
+	ds := registered_information.NewDataStore(r.db)
 	ri, err := ds.Get()
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
 	}
 
-	presenters.RegistrationInformationView(ctx, *ri)
+	presenters.RegisteredInformationView(ctx, *ri)
 }
 
-func (r *Registry) CreateRegistrationInformation(c *gin.Context) {
+func (r *Registry) CreateRegisteredInformation(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
-	ds := registration_information.NewDataStore(r.db)
+	ds := registered_information.NewDataStore(r.db)
 
-	var ipt inputRegistrationInformation
+	var ipt inputRegisteredInformation
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
-	if err := registration_information.ValidateMail(ipt.Mail); err != nil {
+	if err := registered_information.ValidateMail(ipt.Mail); err != nil {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
-	ri, err := ds.Store(&registration_information.RegistrationInformation{
+	ri, err := ds.Store(&registered_information.RegisteredInformation{
 		ID:        models.GenerateUUID(),
 		Mail:      ipt.Mail,
 		CreatedAt: time.Time{},
@@ -44,9 +44,9 @@ func (r *Registry) CreateRegistrationInformation(c *gin.Context) {
 		presenters.ViewInternalServerError(ctx, err)
 	}
 
-	presenters.RegistrationInformationView(ctx, *ri)
+	presenters.RegisteredInformationView(ctx, *ri)
 }
 
-type inputRegistrationInformation struct {
+type inputRegisteredInformation struct {
 	Mail string `json:mail`
 }

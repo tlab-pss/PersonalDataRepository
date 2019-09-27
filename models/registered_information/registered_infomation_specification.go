@@ -1,4 +1,4 @@
-package registration_information
+package registered_information
 
 import (
 	"errors"

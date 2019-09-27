@@ -1,4 +1,4 @@
-package registration_information
+package registered_information
 
 import (
 	"errors"
@@ -13,21 +13,21 @@ func NewDataStore(d *gorm.DB) *datastore {
 	return &datastore{db: d}
 }
 
-func (d *datastore) Get() (*RegistrationInformation, error) {
-	var ri []RegistrationInformation
+func (d *datastore) Get() (*RegisteredInformation, error) {
+	var ri []RegisteredInformation
 
 	if err := d.db.Order("created_at desc").Limit(1).Find(&ri).Error; err != nil {
 		return nil, err
 	}
 
 	if len(ri) == 0 {
-		return nil, errors.New("there is not registration info")
+		return nil, errors.New("there is not registered info")
 	}
 
 	return &ri[len(ri)-1], nil
 }
 
-func (d *datastore) Store(ri *RegistrationInformation) (*RegistrationInformation, error) {
+func (d *datastore) Store(ri *RegisteredInformation) (*RegisteredInformation, error) {
 	if err := d.db.Create(&ri).Error; err != nil {
 		return nil, err
 	}
