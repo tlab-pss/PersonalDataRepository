@@ -12,13 +12,19 @@ import (
 func (r *Registry) GetRegisteredInformation(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
 	ds := registered_information.NewDataStore(r.db)
+
 	ri, err := ds.Get()
 
 	if err != nil {
-		presenters.ViewInternalServerError(ctx, err)
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.RegisteredInformationView(ctx, *ri)
 	}
-
-	presenters.RegisteredInformationView(ctx, *ri)
 }
 
 func (r *Registry) CreateRegisteredInformation(c *gin.Context) {

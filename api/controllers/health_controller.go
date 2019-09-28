@@ -15,10 +15,15 @@ func (r *Registry) GetHealth(c *gin.Context) {
 	h, err := ds.GetLatest()
 
 	if err != nil {
-		presenters.ViewInternalServerError(ctx, err)
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.HealthView(ctx, *h)
 	}
-
-	presenters.HealthView(ctx, *h)
 }
 
 func (r *Registry) CreateHealth(c *gin.Context) {

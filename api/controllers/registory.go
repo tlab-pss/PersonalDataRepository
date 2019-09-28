@@ -1,11 +1,13 @@
 package controllers
 
-import "github.com/jinzhu/gorm"
+import (
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 type Registry struct {
-	db *gorm.DB
+	db *mongo.Client
 }
 
-func NewRegistry(d *gorm.DB) *Registry {
-	return &Registry{db: d}
+func NewRegistry(c *mongo.Client) *Registry {
+	return &Registry{db: c}
 }

@@ -16,10 +16,15 @@ func (r *Registry) GetBasic(c *gin.Context) {
 	b, err := ds.Get()
 
 	if err != nil {
-		presenters.ViewInternalServerError(ctx, err)
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.BasicView(ctx, *b)
 	}
-
-	presenters.BasicView(ctx, *b)
 }
 
 func (r *Registry) CreateBasic(c *gin.Context) {
@@ -63,8 +68,8 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 }
 
 type inputBasic struct {
-	Name     string  `json:"name"`
-	Birthday string  `json:"birthday"`
-	Gender   int     `json:"gender"`
-	Mail     string  `json:"mail"`
+	Name     string `json:"name"`
+	Birthday string `json:"birthday"`
+	Gender   int    `json:"gender"`
+	Mail     string `json:"mail"`
 }

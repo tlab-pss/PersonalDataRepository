@@ -15,10 +15,15 @@ func (r *Registry) GetLocation(c *gin.Context) {
 	l, err := ds.GetLatest()
 
 	if err != nil {
-		presenters.ViewInternalServerError(ctx, err)
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.LocationView(ctx, *l)
 	}
-
-	presenters.LocationView(ctx, *l)
 }
 
 func (r *Registry) CreateLocation(c *gin.Context) {
@@ -48,5 +53,5 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 type inputLocation struct {
 	Latitude       float64 `json:"latitude"`
 	Longitude      float64 `json:"longitude"`
-	Transportation string `json:transportation`
+	Transportation string  `json:transportation`
 }
