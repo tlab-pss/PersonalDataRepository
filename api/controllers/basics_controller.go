@@ -16,10 +16,15 @@ func (r *Registry) GetBasic(c *gin.Context) {
 	b, err := ds.Get()
 
 	if err != nil {
-		presenters.ViewInternalServerError(ctx, err)
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.BasicView(ctx, *b)
 	}
-
-	presenters.BasicView(ctx, *b)
 }
 
 func (r *Registry) CreateBasic(c *gin.Context) {
@@ -33,10 +38,6 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 
 	// TODO: validationどっかにまとめたい
 	if err := basic.ValidateName(ipt.Name); err != nil {
-		presenters.ViewBadRequest(ctx, err)
-	}
-
-	if err := basic.ValidateMail(ipt.Mail); err != nil {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
@@ -56,8 +57,6 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 		Birthday:  tb,
 		Gender:    ipt.Gender,
 		Mail:      ipt.Mail,
-		Weight:    ipt.Weight,
-		Height:    ipt.Height,
 		CreatedAt: time.Now(),
 	})
 
@@ -69,10 +68,8 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 }
 
 type inputBasic struct {
-	Name     string  `json:"name"`
-	Birthday string  `json:"birthday"`
-	Gender   int     `json:"gender"`
-	Mail     string  `json:"mail"`
-	Weight   float64 `json:"weight"`
-	Height   float64 `json:"height"`
+	Name     string `json:"name"`
+	Birthday string `json:"birthday"`
+	Gender   int    `json:"gender"`
+	Mail     string `json:"mail"`
 }

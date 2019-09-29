@@ -5,14 +5,14 @@ import (
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
 	"github.com/yuuis/PersonalDataRepository/models"
-	"github.com/yuuis/PersonalDataRepository/models/location"
+	"github.com/yuuis/PersonalDataRepository/models/health"
 	"time"
 )
 
-func (r *Registry) GetLocation(c *gin.Context) {
+func (r *Registry) GetHealth(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
-	ds := location.NewDataStore(r.db)
-	l, err := ds.GetLatest()
+	ds := health.NewDataStore(r.db)
+	h, err := ds.GetLatest()
 
 	if err != nil {
 		switch err {
@@ -22,34 +22,36 @@ func (r *Registry) GetLocation(c *gin.Context) {
 			presenters.ViewInternalServerError(ctx, err)
 		}
 	} else {
-		presenters.LocationView(ctx, *l)
+		presenters.HealthView(ctx, *h)
 	}
 }
 
-func (r *Registry) CreateLocation(c *gin.Context) {
+func (r *Registry) CreateHealth(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
-	ds := location.NewDataStore(r.db)
+	ds := health.NewDataStore(r.db)
 
-	var ipt inputLocation
+	var ipt inputHealth
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
-	l, err := ds.Store(&location.Location{
-		ID:             models.GenerateUUID(),
-		Latitude:       ipt.Latitude,
-		Longitude:      ipt.Longitude,
-		CreatedAt:      time.Now(),
+	h, err := ds.Store(&health.Health{
+		ID:        models.GenerateUUID(),
+		Weight:    ipt.Weight,
+		Height:    ipt.Height,
+		HeartRate: ipt.HeartRate,
+		CreatedAt: time.Time{},
 	})
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
 	}
 
-	presenters.LocationView(ctx, *l)
+	presenters.HealthView(ctx, *h)
 }
 
-type inputLocation struct {
-	Latitude       float64 `json:"latitude"`
-	Longitude      float64 `json:"longitude"`
+type inputHealth struct {
+	Weight    float64 `json:weight`
+	Height    float64 `json:height`
+	HeartRate int     `json:heartRate`
 }

@@ -1,37 +1,27 @@
 version: '3'
 services:
-  mysql:
-    image: mysql:8.0
-    restart: unless-stopped
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_DATABASE: pss
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - 3306:3306
-    volumes:
-      - ./db/mysql_data:/var/lib/mysql
   mongo:
     image: mongo
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: pss
     ports:
       - 27017:27017
     volumes:
-      - ./db:/data/db/mongo_data
-      - ./configdb:/data/configdb
+      - ./db/mongo/mongo_data:/data/db
+      - ./db/mongo/init/:/docker-entrypoint-initdb.d/
   app:
     build: .
     environment:
-      MYSQL_DATABASE: pss
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_HOST: mysql
+      MONGO_DATABASE: pss
+      MONGO_USER: user
+      MONGO_PASSWORD: password
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      - mongo
     links:
-      - mysql
+      - mongo
     tty: true

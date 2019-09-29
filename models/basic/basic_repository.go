@@ -1,34 +1,40 @@
 package basic
 
 import (
-	"errors"
-	"github.com/jinzhu/gorm"
+	"context"
+	"github.com/yuuis/PersonalDataRepository/api/utilities"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type datastore struct {
-	db *gorm.DB
+	col *mongo.Collection
 }
 
-func NewDataStore(d *gorm.DB) *datastore {
-	return &datastore{db: d}
+func NewDataStore(c *mongo.Client) *datastore {
+	return &datastore{col: c.Database("pss").Collection("basic")}
 }
 
 func (d *datastore) Get() (*Basic, error) {
-	var ba []Basic
+	ba := Basic{}
 
-	if err := d.db.Order("created_at desc").Limit(1).First(&ba).Error; err != nil {
+	findOptions := options.FindOne().SetSort(bson.D{{"createdat", -1}})
+	err := d.col.FindOne(nil, bson.D{}, findOptions).Decode(&ba)
+
+	if err == mongo.ErrNoDocuments {
+		return nil, utilities.NotFoundError
+	} else if err != nil {
 		return nil, err
 	}
 
-	if len(ba) == 0 {
-		return nil, errors.New("there is not basic info")
-	}
-
-	return &ba[0], nil
+	return &ba, nil
 }
 
 func (d *datastore) Store(basic *Basic) (*Basic, error) {
-	if err := d.db.Create(&basic).Error; err != nil {
+	_, err := d.col.InsertOne(context.Background(), basic)
+
+	if err != nil {
 		return nil, err
 	}
 

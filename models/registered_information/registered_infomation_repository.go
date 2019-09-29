@@ -1,4 +1,4 @@
-package location
+package registered_information
 
 import (
 	"context"
@@ -13,14 +13,14 @@ type datastore struct {
 }
 
 func NewDataStore(c *mongo.Client) *datastore {
-	return &datastore{col: c.Database("pss").Collection("location")}
+	return &datastore{col: c.Database("pss").Collection("registered_infomation")}
 }
 
-func (d *datastore) GetLatest() (*Location, error) {
-	lo := Location{}
+func (d *datastore) Get() (*RegisteredInformation, error) {
+	ri := RegisteredInformation{}
 
 	findOptions := options.FindOne().SetSort(bson.D{{"createdat", -1}})
-	err := d.col.FindOne(nil, bson.D{}, findOptions).Decode(&lo)
+	err := d.col.FindOne(nil, bson.D{}, findOptions).Decode(&ri)
 
 	if err == mongo.ErrNoDocuments {
 		return nil, utilities.NotFoundError
@@ -28,15 +28,15 @@ func (d *datastore) GetLatest() (*Location, error) {
 		return nil, err
 	}
 
-	return &lo, nil
+	return &ri, nil
 }
 
-func (d *datastore) Store(location *Location) (*Location, error) {
-	_, err := d.col.InsertOne(context.Background(), location)
+func (d *datastore) Store(ri *RegisteredInformation) (*RegisteredInformation, error) {
+	_, err := d.col.InsertOne(context.Background(), ri)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return location, nil
+	return ri, nil
 }

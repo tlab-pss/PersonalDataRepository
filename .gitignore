@@ -1,5 +1,5 @@
 .DS_Store
 .idea
 go.sum
-db/mysql_data/*
+db/mongo/mongo_data/*
 *.iml
