@@ -4,10 +4,11 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
 )
 
 func OpenMongo() (*mongo.Client, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://user:password@mongo:27017/pss"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://"+os.Getenv("MONGO_USER")+":"+os.Getenv("MONGO_PASSWORD")+"@mongo:27017/"+os.Getenv("MONGO_DATABASE")))
 
 	if err != nil {
 		return nil, err
