@@ -7,6 +7,5 @@ type Basic struct {
 	Name      string
 	Birthday  time.Time
 	Gender    int
-	Mail      string
 	CreatedAt time.Time
 }

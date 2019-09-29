@@ -56,7 +56,6 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 		Name:      ipt.Name,
 		Birthday:  tb,
 		Gender:    ipt.Gender,
-		Mail:      ipt.Mail,
 		CreatedAt: time.Now(),
 	})
 
@@ -71,5 +70,4 @@ type inputBasic struct {
 	Name     string `json:"name"`
 	Birthday string `json:"birthday"`
 	Gender   int    `json:"gender"`
-	Mail     string `json:"mail"`
 }
