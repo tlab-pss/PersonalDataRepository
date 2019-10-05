@@ -18,7 +18,7 @@ func (r *Registry) GetRegisteredInformation(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
-			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+			presenters.ViewNoContent(ctx)
 		default:
 			presenters.ViewInternalServerError(ctx, err)
 		}

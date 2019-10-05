@@ -17,7 +17,7 @@ func (r *Registry) GetLocation(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
-			presenters.ViewNoContent(ctx) // TODO: noContent返していいのか？
+			presenters.ViewNoContent(ctx)
 		default:
 			presenters.ViewInternalServerError(ctx, err)
 		}
@@ -36,10 +36,10 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 	}
 
 	l, err := ds.Store(&location.Location{
-		ID:             models.GenerateUUID(),
-		Latitude:       ipt.Latitude,
-		Longitude:      ipt.Longitude,
-		CreatedAt:      time.Now(),
+		ID:        models.GenerateUUID(),
+		Latitude:  ipt.Latitude,
+		Longitude: ipt.Longitude,
+		CreatedAt: time.Now(),
 	})
 
 	if err != nil {
@@ -50,6 +50,6 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 }
 
 type inputLocation struct {
-	Latitude       float64 `json:"latitude"`
-	Longitude      float64 `json:"longitude"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
 }
