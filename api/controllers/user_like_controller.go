@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
@@ -41,7 +42,7 @@ func (r *Registry) CreateUserLike(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
-			presenters.ViewBadRequest(ctx, err)
+			presenters.ViewBadRequest(ctx, fmt.Errorf("small_category: %v", err))
 		default:
 			presenters.ViewInternalServerError(ctx, err)
 		}
@@ -61,5 +62,5 @@ func (r *Registry) CreateUserLike(c *gin.Context) {
 }
 
 type inputUserLike struct {
-	SmallCategoryId string `json:small_category_id`
+	SmallCategoryId string `json:"small_category_id"`
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
@@ -41,7 +42,7 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
-			presenters.ViewBadRequest(ctx, err)
+			presenters.ViewBadRequest(ctx, fmt.Errorf("big_category: %v", err))
 		default:
 			presenters.ViewInternalServerError(ctx, err)
 		}
@@ -62,6 +63,6 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 }
 
 type inputPluginService struct {
-	Name          string `json:name`
-	BigCategoryId string `json:big_category_id`
+	Name          string `json:"name"`
+	BigCategoryId string `json:"big_category_id"`
 }
