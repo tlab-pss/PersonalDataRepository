@@ -31,15 +31,19 @@ func (d *datastore) Get() (*Conversation, error) {
 	return &c, nil
 }
 
-func (d *datastore) FindByTransactionId(id string) (*Conversation, error) {
-	c := Conversation{}
+func (d *datastore) FindByTransactionId(id string) (*[]Conversation, error) {
+	c := make([]Conversation, 0)
 
-	findOptions := options.FindOne()
-	err := d.col.FindOne(nil, bson.M{"transactionid": id}, findOptions).Decode(&c)
+	findOptions := options.Find()
+	cur, err := d.col.Find(nil, bson.M{"transactionid": id}, findOptions)
 
 	if err == mongo.ErrNoDocuments {
 		return nil, utilities.NotFoundError
 	} else if err != nil {
+		return nil, err
+	}
+
+	if err := cur.Decode(c); err != nil {
 		return nil, err
 	}
 
