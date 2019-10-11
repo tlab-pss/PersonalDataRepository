@@ -2,10 +2,8 @@ package hotpepper
 
 import (
 	"context"
-	"github.com/yuuis/PersonalDataRepository/api/utilities"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type datastore struct {
@@ -16,15 +14,16 @@ func NewDataStore(c *mongo.Client) *datastore {
 	return &datastore{col: c.Database("pss").Collection("hotpepper")}
 }
 
-func (d *datastore) Get() (*Intake, error) {
-	i := Intake{}
+func (d *datastore) All() (*[]Intake, error) {
+	i := make([]Intake, 0)
 
-	findOptions := options.FindOne().SetSort(bson.D{{"createdat", -1}})
-	err := d.col.FindOne(nil, bson.D{}, findOptions).Decode(&i)
+	h, err := d.col.Find(nil, bson.D{})
 
-	if err == mongo.ErrNoDocuments {
-		return nil, utilities.NotFoundError
-	} else if err != nil {
+	if err != nil {
+		return nil, err
+	}
+
+	if err := h.All(context.Background(), &i); err != nil {
 		return nil, err
 	}
 
@@ -40,3 +39,5 @@ func (d *datastore) Store(intake *Intake) (*Intake, error) {
 
 	return intake, nil
 }
+
+// todo: 日付のfindも必要だよねー
