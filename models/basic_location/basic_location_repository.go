@@ -17,7 +17,7 @@ func NewDataStore(c *mongo.Client) *datastore {
 }
 
 func (d *datastore) Get() (*BasicLocation, error) {
-	bl:= BasicLocation{}
+	bl := BasicLocation{}
 
 	findOptions := options.FindOne().SetSort(bson.D{{"createdat", -1}})
 	err := d.col.FindOne(nil, bson.D{}, findOptions).Decode(&bl)
