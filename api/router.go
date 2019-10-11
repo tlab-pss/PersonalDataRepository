@@ -25,4 +25,12 @@ func Router(e *gin.Engine, c *mongo.Client) {
 	// registered information
 	api.GET("/registered-informations", ds.GetRegisteredInformation)
 	api.POST("/registered-informations", ds.CreateRegisteredInformation)
+
+	// plugin service
+	api.GET("/plugin-services", ds.GetPluginService)
+	api.POST("/plugin-services", ds.CreatePluginService)
+
+	// user like
+	api.GET("/user-likes", ds.GetUserLike)
+	api.POST("/user-likes", ds.CreateUserLike)
 }
