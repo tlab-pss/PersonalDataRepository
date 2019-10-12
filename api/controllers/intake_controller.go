@@ -48,11 +48,11 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 		}
 	} else {
 		i, err := ds.Store(&hotpepper.Intake{
-			ID:        models.GenerateUUID(),
-			Menu:      ipt.Menu,
-			Calorie:   ipt.Calorie,
+			ID:              models.GenerateUUID(),
+			Menu:            ipt.Menu,
+			Calorie:         ipt.Calorie,
 			SmallCategoryID: ipt.SmallCategoryID,
-			CreatedAt: time.Now(),
+			CreatedAt:       time.Now(),
 		})
 
 		if err != nil {
@@ -64,7 +64,7 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 }
 
 type inputIntake struct {
-	Menu    string `json:"menu"`
-	Calorie float64 `json:"calorie""`
-	SmallCategoryID string `json:"small_category_id"`
+	Menu            string  `json:"menu"`
+	Calorie         float64 `json:"calorie""`
+	SmallCategoryID string  `json:"small_category_id"`
 }
