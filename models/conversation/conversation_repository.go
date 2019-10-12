@@ -43,7 +43,7 @@ func (d *datastore) FindByTransactionId(id string) (*[]Conversation, error) {
 		return nil, err
 	}
 
-	if err := cur.Decode(c); err != nil {
+	if err := cur.All(context.Background(), &c); err != nil {
 		return nil, err
 	}
 
