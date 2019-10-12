@@ -58,7 +58,7 @@ func (r *Registry) CreateConversation(c *gin.Context) {
 
 	cv, err := ds.Store(&conversation.Conversation{
 		ID:            models.GenerateUUID(),
-		TransactionId: ipt.TransactionId,
+		TransactionID: ipt.TransactionID,
 		RequestText:   ipt.RequestText,
 		ResponseText:  ipt.ResponseText,
 		CreatedAt:     time.Now(),
@@ -72,7 +72,7 @@ func (r *Registry) CreateConversation(c *gin.Context) {
 }
 
 type inputConversation struct {
-	TransactionId string `json:"transaction_id"`
+	TransactionID string `json:"transaction_id"`
 	RequestText   string `json:"request_text"`
 	ResponseText  string `json:"response_text"`
 }

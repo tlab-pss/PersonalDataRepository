@@ -4,7 +4,7 @@ import "time"
 
 type Conversation struct {
 	ID            string
-	TransactionId string
+	TransactionID string
 	RequestText   string
 	ResponseText  string
 	CreatedAt     time.Time
