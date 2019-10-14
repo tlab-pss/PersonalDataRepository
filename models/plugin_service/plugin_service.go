@@ -7,6 +7,6 @@ import (
 type PluginService struct {
 	ID            string
 	Name          string
-	BigCategoryId string
+	BigCategoryID string
 	CreatedAt     time.Time
 }

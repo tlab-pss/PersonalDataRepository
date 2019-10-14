@@ -38,7 +38,7 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 		presenters.ViewBadRequest(ctx, err)
 	}
 
-	_, err := big_category.NewDataStore(r.db).Find(ipt.BigCategoryId)
+	_, err := big_category.NewDataStore(r.db).Find(ipt.BigCategoryID)
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
@@ -50,7 +50,7 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 		ps, err := ds.Store(&plugin_service.PluginService{
 			ID:            models.GenerateUUID(),
 			Name:          ipt.Name,
-			BigCategoryId: ipt.BigCategoryId,
+			BigCategoryID: ipt.BigCategoryID,
 			CreatedAt:     time.Now(),
 		})
 
@@ -64,5 +64,5 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 
 type inputPluginService struct {
 	Name          string `json:"name"`
-	BigCategoryId string `json:"big_category_id"`
+	BigCategoryID string `json:"big_category_id"`
 }

@@ -7,6 +7,6 @@ import (
 type SmallCategory struct {
 	ID            string
 	Name          string
-	BigCategoryId string
+	BigCategoryID string
 	CreatedAt     time.Time
 }

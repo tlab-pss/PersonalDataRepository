@@ -38,7 +38,7 @@ func (d *datastore) Find(id string) (*SmallCategory, error) {
 	sc := SmallCategory{}
 
 	findOptions := options.FindOne()
-	err := d.col.FindOne(nil, bson.D{{"id", id}}, findOptions).Decode(&sc)
+	err := d.col.FindOne(nil, bson.M{"id": id}, findOptions).Decode(&sc)
 
 	if err == mongo.ErrNoDocuments {
 		return nil, utilities.NotFoundError

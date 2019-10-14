@@ -14,6 +14,10 @@ func Router(e *gin.Engine, c *mongo.Client) {
 	api.GET("/basics", ds.GetBasic)
 	api.POST("/basics", ds.CreateBasic)
 
+	// basic location
+	api.GET("/basic-locations", ds.GetBasicLocation)
+	api.POST("/basic-locations", ds.CreateBasicLocation)
+
 	// location
 	api.GET("/locations", ds.GetLocation)
 	api.POST("/locations", ds.CreateLocation)
@@ -33,4 +37,15 @@ func Router(e *gin.Engine, c *mongo.Client) {
 	// user like
 	api.GET("/user-likes", ds.GetUserLike)
 	api.POST("/user-likes", ds.CreateUserLike)
+
+	// conversation
+	api.GET("/conversations", ds.GetConversation)
+	api.GET("/conversations/:transactionID", ds.FindConversation)
+	api.POST("/conversations", ds.CreateConversation)
+
+	// plugins
+
+	// hotpepper
+	api.GET("/hotpepper/intakes", ds.GetIntake)
+	api.POST("/hotpepper/intakes", ds.CreateIntake)
 }
