@@ -19,7 +19,8 @@ func Router(e *gin.Engine, c *mongo.Client) {
 	api.POST("/basic-locations", ds.CreateBasicLocation)
 
 	// location
-	api.GET("/locations", ds.GetLocation)
+	api.GET("/locations", ds.GetLocations)
+	api.GET("/locations/latest", ds.GetLatestLocation)
 	api.POST("/locations", ds.CreateLocation)
 
 	// health

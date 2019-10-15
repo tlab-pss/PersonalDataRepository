@@ -16,6 +16,22 @@ func NewDataStore(c *mongo.Client) *datastore {
 	return &datastore{col: c.Database("pss").Collection("location")}
 }
 
+func (d *datastore) All() (*[]Location, error) {
+	lo := make([]Location, 0)
+
+	h, err := d.col.Find(nil, bson.D{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := h.All(context.Background(), &lo); err != nil {
+		return nil, err
+	}
+
+	return &lo, nil
+}
+
 func (d *datastore) GetLatest() (*Location, error) {
 	lo := Location{}
 

@@ -9,7 +9,24 @@ import (
 	"time"
 )
 
-func (r *Registry) GetLocation(c *gin.Context) {
+func (r *Registry) GetLocations(c *gin.Context) {
+	ctx := utilities.AddGinContext(c.Request.Context(), c)
+	ds := location.NewDataStore(r.db)
+	l, err := ds.All()
+
+	if err != nil {
+		switch err {
+		case utilities.NotFoundError:
+			presenters.ViewNoContent(ctx)
+		default:
+			presenters.ViewInternalServerError(ctx, err)
+		}
+	} else {
+		presenters.LocationsView(ctx, l)
+	}
+}
+
+func (r *Registry) GetLatestLocation(c *gin.Context) {
 	ctx := utilities.AddGinContext(c.Request.Context(), c)
 	ds := location.NewDataStore(r.db)
 	l, err := ds.GetLatest()
