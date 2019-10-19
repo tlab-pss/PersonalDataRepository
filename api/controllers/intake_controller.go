@@ -51,6 +51,8 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 			ID:              models.GenerateUUID(),
 			Menu:            ipt.Menu,
 			Calorie:         ipt.Calorie,
+			Photo:           ipt.Photo,
+			Labels:          ipt.Labels,
 			SmallCategoryID: ipt.SmallCategoryID,
 			CreatedAt:       time.Now(),
 		})
@@ -64,7 +66,9 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 }
 
 type inputIntake struct {
-	Menu            string  `json:"menu"`
-	Calorie         float64 `json:"calorie""`
-	SmallCategoryID string  `json:"small_category_id"`
+	Menu            string   `json:"menu"`
+	Calorie         float64  `json:"calorie"`
+	Photo           string   `json:"photo"`
+	Labels          []string `json:"labels"`
+	SmallCategoryID string   `json:"small_category_id"`
 }
