@@ -51,7 +51,7 @@ func (r *Registry) CreateHealth(c *gin.Context) {
 }
 
 type inputHealth struct {
-	Weight    float64 `json:weight`
-	Height    float64 `json:height`
-	HeartRate int     `json:heartRate`
+	Weight    float64 `json:"weight"`
+	Height    float64 `json:"height"`
+	HeartRate int     `json:"heartRate"`
 }
