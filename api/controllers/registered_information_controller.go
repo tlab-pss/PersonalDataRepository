@@ -54,5 +54,5 @@ func (r *Registry) CreateRegisteredInformation(c *gin.Context) {
 }
 
 type inputRegisteredInformation struct {
-	Mail string `json:mail`
+	Mail string `json:"mail"`
 }

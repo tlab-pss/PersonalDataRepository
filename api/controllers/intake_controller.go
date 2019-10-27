@@ -65,6 +65,6 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 
 type inputIntake struct {
 	Menu            string  `json:"menu"`
-	Calorie         float64 `json:"calorie""`
+	Calorie         float64 `json:"calorie"`
 	SmallCategoryID string  `json:"small_category_id"`
 }
