@@ -35,6 +35,7 @@ func (r *Registry) CreateBasicLocation(c *gin.Context) {
 	var ipt inputBasicLocation
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	b, err := ds.Store(&basic_location.BasicLocation{
@@ -57,6 +58,7 @@ func (r *Registry) CreateBasicLocation(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.BasicLocationView(ctx, *b)

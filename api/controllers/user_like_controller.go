@@ -36,6 +36,7 @@ func (r *Registry) CreateUserLike(c *gin.Context) {
 	var ipt inputUserLike
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	_, err := small_category.NewDataStore(r.db).Find(ipt.SmallCategoryId)
@@ -55,6 +56,7 @@ func (r *Registry) CreateUserLike(c *gin.Context) {
 
 		if err != nil {
 			presenters.ViewInternalServerError(ctx, err)
+			return
 		}
 
 		presenters.UserLikeView(ctx, *ul)
