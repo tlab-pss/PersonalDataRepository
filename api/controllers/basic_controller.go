@@ -34,21 +34,25 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 	var ipt inputBasic
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	// TODO: validationどっかにまとめたい
 	if err := basic.ValidateName(ipt.Name); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	if err := basic.ValidateGender(ipt.Gender); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	tb, err := time.Parse("2006-01-02", ipt.Birthday)
 
 	if err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	b, err := ds.Store(&basic.Basic{
@@ -61,6 +65,7 @@ func (r *Registry) CreateBasic(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.BasicView(ctx, *b)

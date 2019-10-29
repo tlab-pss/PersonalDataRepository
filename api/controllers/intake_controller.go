@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/yuuis/PersonalDataRepository/api/presenters"
 	"github.com/yuuis/PersonalDataRepository/api/utilities"
@@ -36,13 +35,14 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 	var ipt inputIntake
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	_, err := small_category.NewDataStore(r.db).Find(ipt.SmallCategoryID)
 	if err != nil {
 		switch err {
 		case utilities.NotFoundError:
-			presenters.ViewBadRequest(ctx, fmt.Errorf("small_category: %v", err))
+			presenters.ViewBadRequest(ctx, err)
 		default:
 			presenters.ViewInternalServerError(ctx, err)
 		}
@@ -57,6 +57,7 @@ func (r *Registry) CreateIntake(c *gin.Context) {
 
 		if err != nil {
 			presenters.ViewInternalServerError(ctx, err)
+			return
 		}
 
 		presenters.IntakeView(ctx, *i)

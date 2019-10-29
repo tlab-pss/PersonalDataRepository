@@ -54,6 +54,7 @@ func (r *Registry) CreateConversation(c *gin.Context) {
 	var ipt inputConversation
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	cv, err := ds.Store(&conversation.Conversation{
@@ -66,6 +67,7 @@ func (r *Registry) CreateConversation(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.ConversationView(ctx, *cv)

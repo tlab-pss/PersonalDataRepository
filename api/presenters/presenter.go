@@ -16,7 +16,7 @@ func ViewInternalServerError(ctx context.Context, err error) {
 func ViewBadRequest(ctx context.Context, err error) {
 	defer utilities.DeleteGinContext(ctx)
 	c := utilities.GetGinContext(ctx)
-	JSON(c, http.StatusBadRequest, map[string]interface{}{"errors": err.Error()})
+	JSON(c, http.StatusBadRequest, map[string]string{"errors": err.Error()})
 }
 
 func ViewNoContent(ctx context.Context) {

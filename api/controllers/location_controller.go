@@ -50,6 +50,7 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 	var ipt inputLocation
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	l, err := ds.Store(&location.Location{
@@ -61,6 +62,7 @@ func (r *Registry) CreateLocation(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.LocationView(ctx, *l)

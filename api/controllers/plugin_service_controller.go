@@ -36,6 +36,7 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 	var ipt inputPluginService
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	_, err := big_category.NewDataStore(r.db).Find(ipt.BigCategoryID)
@@ -56,6 +57,7 @@ func (r *Registry) CreatePluginService(c *gin.Context) {
 
 		if err != nil {
 			presenters.ViewInternalServerError(ctx, err)
+			return
 		}
 
 		presenters.PluginServiceView(ctx, *ps)

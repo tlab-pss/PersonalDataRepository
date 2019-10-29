@@ -33,6 +33,7 @@ func (r *Registry) CreateHealth(c *gin.Context) {
 	var ipt inputHealth
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	h, err := ds.Store(&health.Health{
@@ -45,6 +46,7 @@ func (r *Registry) CreateHealth(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.HealthView(ctx, *h)

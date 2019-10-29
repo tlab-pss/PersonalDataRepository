@@ -34,10 +34,12 @@ func (r *Registry) CreateRegisteredInformation(c *gin.Context) {
 	var ipt inputRegisteredInformation
 	if err := c.BindJSON(&ipt); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	if err := registered_information.ValidateMail(ipt.Mail); err != nil {
 		presenters.ViewBadRequest(ctx, err)
+		return
 	}
 
 	ri, err := ds.Store(&registered_information.RegisteredInformation{
@@ -48,6 +50,7 @@ func (r *Registry) CreateRegisteredInformation(c *gin.Context) {
 
 	if err != nil {
 		presenters.ViewInternalServerError(ctx, err)
+		return
 	}
 
 	presenters.RegisteredInformationView(ctx, *ri)
